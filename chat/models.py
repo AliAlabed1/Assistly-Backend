@@ -22,7 +22,7 @@ class Guest(models.Model):
         return self.name or "Anonymous Guest"
 
 class ChatSession(models.Model):
-    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE)
+    chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE,related_name='chat_sessions')
     guest = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
