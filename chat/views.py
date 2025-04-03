@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import chatbotSerializer,ChatbotCharactersticsSerializer
-from .models import Chatbot,ChatbotCharacteristic
+from .serializers import chatbotSerializer,ChatbotCharactersticsSerializer,ChatSessionSerializer
+from .models import Chatbot,ChatbotCharacteristic,ChatSession
 from django.http import JsonResponse
 from django.utils import timezone
 
@@ -72,3 +72,12 @@ def update_chatbot_name(request):
         return JsonResponse({'message':"Chatbot name updated successfully!"})
     except Chatbot.DoesNotExist:
         return JsonResponse({"message":"Chatbot not exsist"},)
+
+@api_view(["GET"])
+def get_session_by_id(request,session_id):
+    try:
+        session = ChatSession.objects.get(id = session_id)
+    except ChatSession.DoesNotExist:
+        return Response({"message":"Session does not exist"},status=status.HTTP_404_NOT_FOUND)
+    serializer = ChatSessionSerializer(session)
+    return Response(serializer.data)

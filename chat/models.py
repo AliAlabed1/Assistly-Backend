@@ -23,7 +23,7 @@ class Guest(models.Model):
 
 class ChatSession(models.Model):
     chatbot = models.ForeignKey(Chatbot, on_delete=models.CASCADE,related_name='chat_sessions')
-    guest = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True)
+    guest = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True,related_name='guests')
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Message(models.Model):

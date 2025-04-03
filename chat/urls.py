@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_chatbot,get_chatbot_by_id,delete_chatbot_characteristic,delete_chatbot,get_user_chatbots,create_characteristic,update_chatbot_name
+from .views import create_chatbot,get_chatbot_by_id,delete_chatbot_characteristic,delete_chatbot,get_user_chatbots,create_characteristic,update_chatbot_name,get_session_by_id
 
 urlpatterns = [
     path('chatbots/',create_chatbot, name= 'create_chatbot'),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('chatbot_del/<int:chatbot_id>/',delete_chatbot,name = 'delete_chatbot'),
     path('user_chatbots/<str:user_id>/',get_user_chatbots,name = 'get_user_chatbots'),
     path('characteristic/create/',create_characteristic,name = 'create_characteristic'),
-    path('change_chatbot_name/',update_chatbot_name,name='update_chatbot_name')
+    path('change_chatbot_name/',update_chatbot_name,name='update_chatbot_name'),
+    path('sessions/<int:session_id>/',get_session_by_id,name='get_session_by_id')
 ]
