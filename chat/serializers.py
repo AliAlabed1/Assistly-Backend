@@ -14,7 +14,8 @@ class MessagesSerialiser(serializers.ModelSerializer):
 class GuestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Guest
-        fields = ['email','name','created_at']
+        fields = ['id','email','name','created_at']
+        read_only_fields = ['id','created_at']
 
 class ChatbotCharactersticsSerializer(serializers.ModelSerializer):
     chatbot_id = serializers.PrimaryKeyRelatedField(

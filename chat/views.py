@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import chatbotSerializer,ChatbotCharactersticsSerializer,ChatSessionSerializer
+from .serializers import chatbotSerializer,ChatbotCharactersticsSerializer,ChatSessionSerializer,GuestSerializer,MessagesSerialiser
 from .models import Chatbot,ChatbotCharacteristic,ChatSession
 from django.http import JsonResponse
 from django.utils import timezone
@@ -81,3 +81,27 @@ def get_session_by_id(request,session_id):
         return Response({"message":"Session does not exist"},status=status.HTTP_404_NOT_FOUND)
     serializer = ChatSessionSerializer(session)
     return Response(serializer.data)
+
+@api_view(["POST"])
+def add_new_guest(request):
+    serializer = GuestSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def add_new_session(request):
+    serializer = ChatSessionSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def add_new_message(request):
+    serializer = MessagesSerialiser(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
