@@ -34,12 +34,16 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         queryset=Chatbot.objects.all(),
         source='chatbot'  
     )
+    guest_id = serializers.PrimaryKeyRelatedField(
+        queryset=Guest.objects.all(),
+        source='guest'
+    )
     chatbot_name = serializers.CharField(source='chatbot.name', read_only=True)
     guest = GuestSerializer(read_only = True)
     messages = MessagesSerialiser(read_only=True,many=True)
     class Meta:
         model = ChatSession
-        fields = ['id','created_at','chatbot_id','guest','messages','chatbot_name']
+        fields = ['id','created_at','chatbot_id','guest_id','guest','messages','chatbot_name']
         read_only_fields = ['id', 'created_at']
 
 class chatbotSerializer(serializers.ModelSerializer):

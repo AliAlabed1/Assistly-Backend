@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import chatbotSerializer,ChatbotCharactersticsSerializer,ChatSessionSerializer,GuestSerializer,MessagesSerialiser
-from .models import Chatbot,ChatbotCharacteristic,ChatSession
+from .models import Chatbot,ChatbotCharacteristic,ChatSession,Message
 from django.http import JsonResponse
 from django.utils import timezone
 
@@ -92,9 +92,12 @@ def add_new_guest(request):
 
 @api_view(["POST"])
 def add_new_session(request):
+    print(request.data)
     serializer = ChatSessionSerializer(data = request.data)
+    
     if serializer.is_valid():
         serializer.save()
+        print(serializer.data)
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
@@ -105,3 +108,13 @@ def add_new_message(request):
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def get_session_messages(request,session_id):
+    try:
+        messages = Message.objects.filter(chat_session_id = session_id)
+        serializer = MessagesSerialiser(messages,many=True)
+    except Exception as e:
+        return Response({"error":"Unexpected error"})
+    return Response(serializer.data)
+        
